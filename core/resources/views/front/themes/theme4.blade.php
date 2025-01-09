@@ -168,7 +168,7 @@
                 </div>
             </div>
             {{-- view all round button --}}
-            <div class="row">
+            <div class="container-fluid row">
                 <div class="col-lg-12 text-center mt-4">
                     <a href="{{ route('front.catalog') }}" class="button-outline">{{ __('VIEW ALL') }}</a>
                 </div>
