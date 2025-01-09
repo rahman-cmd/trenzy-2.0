@@ -362,13 +362,13 @@
                                         <span class="ml-3">{{ $review->created_at->format('M d, Y') }}</span>
                                     </div>
                                     <div class="mb-2">
-                                        <div class="rating-stars">
+                                        {{-- <div class="rating-stars">
                                             @php
                                                 for ($i = 0; $i < $review->rating; $i++) {
                                                     echo "<i class = 'far fa-star filled'></i>";
                                                 }
                                             @endphp
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <p class="comment-text  mt-2">{{ $review->review }}</p>
@@ -529,6 +529,34 @@
                                         <h3 class="product-title"><a href="{{ route('front.product', $related->slug) }}">
                                                 {{ Str::limit($related->name, 35) }}
                                             </a></h3>
+
+
+                                        {{-- show attribute --}}
+                                        @foreach ($attributes as $attribute)
+                                            @if ($attribute->options->count() != 0)
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label
+                                                            for="{{ $attribute->name }}">{{ $attribute->name }}</label>
+                                                        <select class="form-control attribute_option"
+                                                            id="{{ $attribute->name }}">
+                                                            @foreach ($attribute->options->where('stock', '!=', '0') as $option)
+                                                                <option value="{{ $option->name }}"
+                                                                    data-type="{{ $attribute->id }}"
+                                                                    data-href="{{ $option->id }}"
+                                                                    data-target="{{ PriceHelper::setConvertPrice($option->price) }}">
+                                                                    {{ $option->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+
+
+
+
+
                                         <h4 class="product-price">
                                             @if ($related->previous_price != 0)
                                                 <del>{{ PriceHelper::setPreviousPrice($related->previous_price) }}</del>

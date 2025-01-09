@@ -146,7 +146,7 @@ body_theme4 @endif
                             <!-- Cart Icon -->
                             <a href="{{ route('front.cart') }}" class="text-dark position-relative">
                                 <i class="icon-shopping-cart fs-4"></i>
-                                <span
+                                <span id="cart-count"
                                     class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
                                     {{ Session::has('cart') ? count(Session::get('cart')) : '0' }}
                                 </span>
