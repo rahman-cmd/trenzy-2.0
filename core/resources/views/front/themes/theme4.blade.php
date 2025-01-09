@@ -176,6 +176,25 @@
         </section>
     @endif
 
+    @php
+        $getCategories = App\Models\Category::select('id', 'name', 'photo')->take(4)->get();
+    @endphp
+
+    <div class="container-fluid my-5">
+        <div class="row g-4">
+            <h3 class="text-center text-bold text-dark">SEASONAL FAVS☀️</h3>
+
+            @foreach ($getCategories as $cat)
+                <div class="col-md-3">
+                    <div class="category-cards position-relative">
+                        <img src="{{ asset('assets/images/' . $cat->photo) }}" alt="Category">
+                        <div class="category-title text-light text-uppercase">{{ $cat->name }}</div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     @if ($extra_settings->is_t4_3_column_banner_first == 1)
         <div class="bannner-section mt-60">
             <div class="container-fluid ">
@@ -444,6 +463,25 @@
             @endforeach
         @endif
     @endif
+
+    @php
+        $Categories_2 = App\Models\Category::select('id', 'name', 'photo')->skip(4)->take(4)->get();
+    @endphp
+
+    <div class="container-fluid my-5">
+        <div class="row g-4">
+            <h3 class="text-center text-bold text-dark">TRENDING NOW</h3>
+
+            @foreach ($Categories_2 as $cat2)
+                <div class="col-md-3">
+                    <div class="category-cards position-relative">
+                        <img src="{{ asset('assets/images/' . $cat2->photo) }}" alt="Category">
+                        <div class="category-title text-light text-uppercase">{{ $cat2->name }}</div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 
     @if ($extra_settings->is_t4_2_column_banner == 1)
         <div class="bannner-section mt-50">

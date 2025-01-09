@@ -1030,6 +1030,10 @@ $(function ($) {
               // $(".cart_view_header").load(
               //   $("#header_cart_load").attr("data-target")
               // );
+              if (data.qty) {
+                $("#cart-count").text(data.qty);
+              }
+
               if (qty) {
                 $("#view_cart_load").load(
                   $("#cart_view_load").attr("data-target")

@@ -6624,7 +6624,7 @@ video {
     color: #232323;
     text-decoration: none;
     font-size: 14px;
-    height: 37px;
+    /* height: 37px; */
     display: block;
     font-weight: 500;
     line-height: 18px
@@ -9380,4 +9380,163 @@ body {
 .button-outline:hover {
     background-color: #000;
     color: #fff;
+}
+
+
+
+/* home page category section style  */
+.category-cards {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 410px;
+}
+
+.category-cards img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.category-cards:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.category-title {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* category menu style  */
+.category-sidebar {
+    position: fixed;
+    top: 0;
+    left: -350px;
+    /* Hidden initially */
+    width: 350px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.category-sidebar.open {
+    left: 0;
+    /* Slide in */
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.category-list {
+    padding: 15px;
+}
+
+.c-item {
+    margin-bottom: 15px;
+}
+
+.c-item .navi-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+.c-item img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+
+.child-category {
+    margin-left: 30px;
+}
+
+.open-sidebar-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 9999;
+    font-size: 35px;
+}
+
+body.sidebar-open {
+    overflow: hidden;
+}
+
+.close-sidebar {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Initially hide second and third-level categories */
+.sub-c-box,
+.child-category {
+    display: none;
+}
+
+
+/* Show second level when hovering over a first-level category */
+.c-item:hover .sub-c-box {
+    display: block;
+}
+
+/* Show third level when hovering over a second-level category */
+.child-c-box:hover .child-category {
+    display: block;
+}
+
+/* Optional: Add styling for a smoother transition */
+.sub-c-box,
+.child-category {
+    transition: all 0.3s ease;
+}
+
+.category-list .sub-c-box .title {
+    color: #555;
+    line-height: 40px;
+    display: block;
+    padding: 0 15px;
+    transition: .3s linear;
+    font-size: 17px;
+}
+
+.category-list .sub-c-box .child-category a {
+    color: #555;
+    line-height: 40px;
+    display: block;
+    padding: 0 15px;
+    transition: .3s linear;
+    font-size: 17px;
+}
+
+.child-c-box {
+    margin-left: 30px;
 }
