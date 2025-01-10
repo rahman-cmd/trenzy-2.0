@@ -40,7 +40,7 @@
         </div>
     </div>
     <!-- Page Content-->
-    <div class="container padding-bottom-1x mb-1">
+    <div class="container-fluid padding-bottom-1x mb-1">
         <div class="row">
             <!-- Poduct Gallery-->
             <div class="col-xxl-5 col-lg-6 col-md-6">
@@ -338,7 +338,7 @@
 
 
     <!-- Reviews-->
-    <div class="container  review-area">
+    <div class="container-fluid  review-area">
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
@@ -459,7 +459,7 @@
     </div>
 
     @if (count($related_items) > 0)
-        <div class="relatedproduct-section container padding-bottom-3x mb-1 s-pt-30">
+        <div class="relatedproduct-section container-fluid padding-bottom-3x mb-1 s-pt-30">
             <!-- Related Products Carousel-->
             <div class="row">
                 <div class="col-lg-12">
@@ -535,7 +535,7 @@
                                         @foreach ($attributes as $attribute)
                                             @if ($attribute->options->count() != 0)
                                                 <div class="col-sm-6">
-                                                    <div class="form-group">
+                                                    {{-- <div class="form-group">
                                                         <label
                                                             for="{{ $attribute->name }}">{{ $attribute->name }}</label>
                                                         <select class="form-control attribute_option"
@@ -548,7 +548,7 @@
                                                                     {{ $option->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             @endif
                                         @endforeach
