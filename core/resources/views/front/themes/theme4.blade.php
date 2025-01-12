@@ -102,7 +102,7 @@
             @endforeach
         </div>
     </div> --}}
-    <div class="d-md-none d-block my-5"> 
+    <div class="d-sm-none d-block my-5"> 
         <div class="container-fluid">
             <h3 class="text-center">SHOP BY CATEGORY</h3>
             <div class="category-sliderr owl-carousel">
