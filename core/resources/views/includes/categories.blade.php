@@ -56,10 +56,10 @@
 </div> --}}
 
 <!-- Menu Bar -->
-<div id="bar">
+<div id="bar align-items-center">
     {{-- <button class="open-sidebar-btn" onclick="toggleSidebar()">☰</button> --}}
     <button class="open-sidebar-btn" onclick="toggleSidebar()">
-        &#9776;
+        <h5><i class="icon-align-justify fs-4"></i></h5>
     </button>
 </div>
 
