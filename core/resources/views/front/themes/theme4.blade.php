@@ -106,7 +106,7 @@
         <div class="container-fluid">
             <h3 class="text-center">SHOP BY CATEGORY</h3>
             <div class="category-sliderr owl-carousel">
-                @foreach ($category_img->chunk(3) as $chunk)
+                @foreach ($category_img->chunk(6) as $chunk)
                     <div class="item">
                         <div class="row g-4">
                             @foreach ($chunk as $catimg)
