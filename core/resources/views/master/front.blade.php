@@ -111,19 +111,19 @@ body_theme4 @endif
                         <div class="toolbar d-flex justify-content-end align-items-center gap-3">
                             <!-- Mobile Search Icon -->
                             <a href="#" class="text-dark d-lg-none">
-                                <i class="icon-search fs-4"></i>
+                                <i class="icon-search fs-4 d-none"></i>
                             </a>
 
                             <!-- Mobile Menu Toggle -->
                             <a href="#" class="text-dark d-lg-none">
-                                <i class="icon-menu fs-4"></i>
+                                <i class="icon-menu fs-4 d-none"></i>
                             </a>
 
                             <!-- Compare Icon -->
                             <a href="{{ route('fornt.compare.index') }}" class="text-dark position-relative">
-                                <i class="icon-repeat fs-4"></i>
+                                <i class="icon-repeat fs-4 d-lg-block d-none"></i>
                                 <span
-                                    class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
+                                    class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle d-lg-block  d-none">
                                     {{ Session::has('compare') ? count(Session::get('compare')) : '0' }}
                                 </span>
                             </a>
@@ -131,15 +131,15 @@ body_theme4 @endif
                             <!-- Wishlist Icon -->
                             @if (Auth::check())
                                 <a href="{{ route('user.wishlist.index') }}" class="text-dark position-relative">
-                                    <i class="icon-heart fs-4"></i>
+                                    <i class="icon-heart fs-4 d-lg-block d-none"></i>
                                     <span
-                                        class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
+                                        class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle d-lg-block d-none">
                                         {{ Auth::user()->wishlists->count() }}
                                     </span>
                                 </a>
                             @else
                                 <a href="{{ route('user.wishlist.index') }}" class="text-dark">
-                                    <i class="icon-heart fs-4"></i>
+                                    <i class="icon-heart fs-4 d-lg-block d-none"></i>
                                 </a>
                             @endif
 

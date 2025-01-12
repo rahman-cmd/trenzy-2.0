@@ -293,7 +293,8 @@
 
 @media (max-width: 500px) {
     .hero-area3.hero-area4 .item {
-        height: 250px;
+        /* height: 250px; */
+        height: 218px;
     }
 
     .slider-area-wrapper .item-inner .title {
