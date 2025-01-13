@@ -1168,3 +1168,19 @@ $(window).on("load", function (event) {
     }
   }
 });
+
+//mobile view category slide
+$(document).ready(function () {
+  $(".category-sliderr").owlCarousel({
+    loop: true, // Enables infinite loop
+    margin: 10, // Space between items
+    nav: false, // Shows next/prev buttons
+    dots: false, // Shows dots navigation
+    thumbs: false,
+    responsive: {
+      0: {
+        items: 1, // Number of items to show on mobile
+      },
+    },
+  });
+});

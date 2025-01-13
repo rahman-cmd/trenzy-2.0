@@ -367,7 +367,7 @@ iframe {
     width: 100% !important
 }
 
-.dropdown-menu .dropdown-item:hover .toolbar-dropdown.cart-dropdown,
+/* .dropdown-menu .dropdown-item:hover .toolbar-dropdown.cart-dropdown,
 .left-category-area .category-list .c-item:hover .sub-c-box,
 .left-category-area .category-list .sub-c-box .child-c-box:hover .child-category,
 .mobile-cat .has-children .category_search,
@@ -375,7 +375,7 @@ iframe {
 .slideable-menu .menu li,
 .slideable-menu ul li.t-h-dropdown:hover .t-h-dropdown-menu {
     display: block
-}
+} */
 
 .slideable-menu .menu {
     display: block;
@@ -8868,7 +8868,6 @@ screen and (-ms-high-contrast:none) {
 
 .section-title3::after {
     position: absolute;
-    content: "";
     height: 1px;
     width: 100%;
     left: 0;
@@ -9446,6 +9445,7 @@ body {
 
 .c-item {
     margin-bottom: 15px;
+    line-height: 40px;
 }
 
 .c-item .navi-link {
@@ -9454,14 +9454,15 @@ body {
     justify-content: space-between;
     text-decoration: none;
     color: #333;
-    font-size: 16px;
+    font-size: 17.6px;
+    font-weight: 400;
 }
 
-.c-item img {
+/* .c-item img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
-}
+} */
 
 
 .child-category {
@@ -9503,8 +9504,11 @@ body.sidebar-open {
 
 
 /* Show second level when hovering over a first-level category */
+
+
 .c-item:hover .sub-c-box {
     display: block;
+    transition: 0.5s;
 }
 
 /* Show third level when hovering over a second-level category */
@@ -9538,4 +9542,25 @@ body.sidebar-open {
 
 .child-c-box {
     margin-left: 30px;
+}
+
+/* user icon and text style  in category menu  */
+.user-log-text {
+    position: relative;
+    top: -1px;
+    font-size: 14px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.user-icon {
+    background-color: #D9D9D9;
+    border-radius: 50%;
+    padding: 6px;
+    font-size: 14px !important;
+}
+
+/* first category image style, which only display on mobile view  */
+.category-cardd img {
+    padding-bottom: 12px;
 }

@@ -84,6 +84,52 @@
         </div>
     @endif
 
+    @php
+        $category_img = App\Models\Category::with('subcategory')->whereStatus(1)->orderby('serial', 'asc')->get();
+    @endphp
+
+    {{-- <div class="container-fluid my-5">
+        <div class="row g-4">
+
+            @foreach ($category_img as $catimg)
+                <div class="col-md-3 col-sm-6 col-6">
+                    <div class="category-cards position-relative">
+                        <a  style="color:#FF6A03;" href="{{ route('front.catalog') . '?category=' . $catimg->slug }}">
+                           <img src="{{ asset('assets/images/' . $catimg->photo) }}" alt="Category">
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div> --}}
+    <div class="d-sm-none d-block my-5">
+        <div class="container-fluid">
+            <h3 class="text-center">SHOP BY CATEGORY</h3>
+            <div class="category-sliderr owl-carousel">
+                @foreach ($category_img->chunk(6) as $chunk)
+                    <div class="item">
+                        <div class="row g-4">
+                            @foreach ($chunk as $catimg)
+                                <div class="col-4">
+                                    <div class="category-cardd position-relative">
+                                        <a style="color:#000000;"
+                                            href="{{ route('front.catalog') . '?category=' . $catimg->slug }}">
+                                            <img src="{{ asset('assets/images/' . $catimg->photo) }}"
+                                                alt="{{ $catimg->name }}" class="img-fluid">
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+
+
+
 
     @if ($extra_settings->is_t4_specialpick == 1)
         <section class="selected-product-section mt-50">
@@ -177,7 +223,11 @@
     @endif
 
     @php
-        $getCategories = App\Models\Category::select('id', 'name', 'photo')->take(4)->get();
+        $getCategories = App\Models\Category::with('subcategory')
+            ->whereStatus(1)
+            ->orderby('serial', 'asc')
+            ->take(4)
+            ->get();
     @endphp
 
     <div class="container-fluid my-5">
@@ -185,10 +235,15 @@
             <h3 class="text-center text-bold text-dark">SEASONAL FAVS☀️</h3>
 
             @foreach ($getCategories as $cat)
-                <div class="col-md-3">
+                <div class="col-md-3 col-sm-6 col-6">
                     <div class="category-cards position-relative">
                         <img src="{{ asset('assets/images/' . $cat->photo) }}" alt="Category">
-                        <div class="category-title text-light text-uppercase">{{ $cat->name }}</div>
+                        <div class="category-title text-light text-uppercase">
+                            <a style="color:#000000;" href="{{ route('front.catalog') . '?category=' . $cat->slug }}">
+                                {{ $cat->name }}
+                            </a>
+
+                        </div>
                     </div>
                 </div>
             @endforeach
@@ -465,7 +520,12 @@
     @endif
 
     @php
-        $Categories_2 = App\Models\Category::select('id', 'name', 'photo')->skip(4)->take(4)->get();
+        $Categories_2 = App\Models\Category::with('subcategory')
+            ->whereStatus(1)
+            ->orderby('serial', 'asc')
+            ->skip(4)
+            ->take(4)
+            ->get();
     @endphp
 
     <div class="container-fluid my-5">
@@ -473,10 +533,14 @@
             <h3 class="text-center text-bold text-dark">TRENDING NOW</h3>
 
             @foreach ($Categories_2 as $cat2)
-                <div class="col-md-3">
+                <div class="col-md-3 col-sm-6 col-6">
                     <div class="category-cards position-relative">
                         <img src="{{ asset('assets/images/' . $cat2->photo) }}" alt="Category">
-                        <div class="category-title text-light text-uppercase">{{ $cat2->name }}</div>
+                        <div class="category-title text-light text-uppercase">
+                            <a style="color:#000000;"
+                                href="{{ route('front.catalog') . '?category=' . $cat2->slug }}">{{ $cat2->name }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             @endforeach
