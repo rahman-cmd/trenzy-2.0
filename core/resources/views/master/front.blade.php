@@ -120,37 +120,13 @@ body_theme4 @endif
                             </a>
 
                             <!-- Compare Icon -->
-                            <a href="{{ route('fornt.compare.index') }}" class="text-dark position-relative">
+                            {{-- <a href="{{ route('fornt.compare.index') }}" class="text-dark position-relative">
                                 <i class="icon-repeat fs-4 d-lg-block d-none"></i>
                                 <span
                                     class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle d-lg-block  d-none">
                                     {{ Session::has('compare') ? count(Session::get('compare')) : '0' }}
                                 </span>
-                            </a>
-
-                            <!-- Wishlist Icon -->
-                            @if (Auth::check())
-                                <a href="{{ route('user.wishlist.index') }}" class="text-dark position-relative">
-                                    <i class="icon-heart fs-4 d-lg-block d-none"></i>
-                                    <span
-                                        class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle d-lg-block d-none">
-                                        {{ Auth::user()->wishlists->count() }}
-                                    </span>
-                                </a>
-                            @else
-                                <a href="{{ route('user.wishlist.index') }}" class="text-dark">
-                                    <i class="icon-heart fs-4 d-lg-block d-none"></i>
-                                </a>
-                            @endif
-
-                            <!-- Cart Icon -->
-                            <a href="{{ route('front.cart') }}" class="text-dark position-relative">
-                                <i class="icon-shopping-cart fs-4"></i>
-                                <span id="cart-count"
-                                    class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
-                                    {{ Session::has('cart') ? count(Session::get('cart')) : '0' }}
-                                </span>
-                            </a>
+                            </a> --}}
 
                             <!-- User Icon -->
                             @if (!Auth::user())
@@ -177,6 +153,46 @@ body_theme4 @endif
                                     </ul>
                                 </div>
                             @endif
+
+
+
+                            <!-- Search Icon -->
+                            <a href="#" id="toggle-search" class="text-dark" data-bs-toggle="modal"
+                                data-bs-target="#searchModal">
+                                <i class="icon-search fs-4"></i>
+                            </a>
+
+
+
+
+
+
+                            <!-- Wishlist Icon -->
+                            @if (Auth::check())
+                                <a href="{{ route('user.wishlist.index') }}"
+                                    class="text-dark position-relative d-lg-block d-none">
+                                    <i class="icon-heart fs-4"></i>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle d-lg-block d-none">
+                                        {{ Auth::user()->wishlists->count() }}
+                                    </span>
+                                </a>
+                            @else
+                                <a href="{{ route('user.wishlist.index') }}" class="text-dark d-lg-block d-none">
+                                    <i class="icon-heart fs-4 "></i>
+                                </a>
+                            @endif
+
+                            <!-- Cart Icon -->
+                            <a href="{{ route('front.cart') }}" class="text-dark position-relative">
+                                <i class="icon-shopping-cart fs-4"></i>
+                                <span id="cart-count"
+                                    class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle">
+                                    {{ Session::has('cart') ? count(Session::get('cart')) : '0' }}
+                                </span>
+                            </a>
+
+
                         </div>
                     </div>
                 </div>
@@ -283,7 +299,55 @@ body_theme4 @endif
 
 
 
+
+
     </header>
+
+    <!-- Full-Screen Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">{{ __('Search') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <!-- Search Box Wrapper -->
+                            <div class="col-12 col-md-8">
+                                <form class="input-group" id="header_search_form"
+                                    action="{{ route('front.catalog') }}" method="get">
+                                    <input type="hidden" name="category" value="" id="search__category">
+
+                                    <!-- Search Button -->
+                                    <span class="input-group-btn">
+                                        <button type="submit"><i class="icon-search"></i></button>
+                                    </span>
+
+                                    <!-- Search Input -->
+                                    <input class="form-control" type="text"
+                                        data-target="{{ route('front.search.suggest') }}" id="__product__search"
+                                        name="search" placeholder="{{ __('Search by product name') }}">
+
+                                </form>
+
+                                <div class="serch-result d-none mt-3">
+                                    <!-- Results will populate here -->
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Page Content-->
     @yield('content')
 

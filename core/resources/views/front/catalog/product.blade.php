@@ -255,9 +255,9 @@
                                             <span class="wishlist2 d-none">{{ __('Added To Wishlist') }}</span>
                                         @endif
                                     </a>
-                                    <button class="btn btn-primary btn-sm  product_compare"
+                                    {{-- <button class="btn btn-primary btn-sm  product_compare"
                                         data-target="{{ route('fornt.compare.product', $item->id) }}"><span><i
-                                                class="icon-repeat"></i>{{ __('Compare') }}</span></button>
+                                                class="icon-repeat"></i>{{ __('Compare') }}</span></button> --}}
                                 </div>
 
                                 <div class="d-flex align-items-center">
