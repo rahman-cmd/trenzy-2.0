@@ -54,7 +54,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="checkout-email">{{ __('E-mail Address') }}</label>
+                                        <label for="checkout-email">{{ __('E-mail Address (Optional)') }}</label>
                                         <input class="form-control" name="ship_email" type="email" id="checkout-email"
                                             value="{{ isset($user) ? $user->email : '' }}">
                                     </div>

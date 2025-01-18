@@ -58,7 +58,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="checkout_email_billing">{{ __('E-mail Address (Optional)') }}</label>
-                                        <input class="form-control" name="bill_email" type="email" required
+                                        <input class="form-control" name="bill_email" type="email"
                                             id="checkout_email_billing" value="{{ isset($user) ? $user->email : '' }}">
                                     </div>
                                 </div>
