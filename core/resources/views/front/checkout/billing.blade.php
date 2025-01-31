@@ -12,7 +12,7 @@
                 <ul class="breadcrumbs">
                     <li><a href="{{ route('front.index') }}">{{ __('Home') }}</a> </li>
                     <li class="separator"></li>
-                    <li>{{ __('Billing address') }}</li>
+                    <li>{{ __('Billing Address & Shipping Address') }}</li>
                 </ul>
             </div>
         </div>
@@ -20,22 +20,16 @@
 
     <!-- Page Content-->
     <div class="container padding-bottom-3x mb-1 checkut-page">
+
         <div class="row">
             <!-- Billing Adress-->
+
             <div class="col-xl-9 col-lg-8">
-                <div class="steps flex-sm-nowrap mb-5"><a class="step active" href="{{ route('front.checkout.billing') }}">
-                        <h4 class="step-title">1. {{ __('Billing Address') }}:</h4>
-                    </a><a class="step" href="javascript:;">
-                        <h4 class="step-title">2. {{ __('Shipping Address') }}:</h4>
-                    </a><a class="step" href="{{ route('front.checkout.payment') }}">
-                        <h4 class="step-title">3. {{ __('Review and pay') }}</h4>
-                    </a>
-                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h6>{{ __('Billing Address') }}</h6>
+                        <h6>{{ __('Billing Address & Shipping Address') }}</h6>
 
-                        <form id="checkoutBilling" action="{{ route('front.checkout.store') }}" method="POST">
+                        <form id="checkoutBilling" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-sm-6">
@@ -76,10 +70,7 @@
                             </div>
 
 
-
-
-
-                            <div class="form-group">
+                            <div class="form-group d-none">
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="same_address"
                                         name="same_ship_address" checked>
@@ -88,41 +79,234 @@
                                     </label>
                                 </div>
                             </div>
-
-
-                            @if ($setting->is_privacy_trams == 1)
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="trams__condition">
-                                        <label class="custom-control-label" for="trams__condition">This site is protected
-                                            by reCAPTCHA and the <a href="{{ $setting->policy_link }}"
-                                                target="_blank">Privacy Policy</a> and <a href="{{ $setting->terms_link }}"
-                                                target="_blank">Terms of Service</a>
-                                            apply.</label>
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="d-flex justify-content-between paddin-top-1x mt-4">
-                                <a class="btn btn-primary btn-sm" href="{{ route('front.cart') }}"><span
-                                        class="hidden-xs-down"><i
-                                            class="icon-arrow-left"></i>{{ __('Back To Cart') }}</span></a>
-                                @if ($setting->is_privacy_trams == 1)
-                                    <button disabled id="continue__button" class="btn btn-primary  btn-sm"
-                                        type="button"><span class="hidden-xs-down">{{ __('Continue') }}</span><i
-                                            class="icon-arrow-right"></i></button>
-                                @else
-                                    <button class="btn btn-primary btn-sm" type="submit"><span
-                                            class="hidden-xs-down">{{ __('Continue') }}</span><i
-                                            class="icon-arrow-right"></i></button>
-                                @endif
-                            </div>
                         </form>
                     </div>
                 </div>
+
+                <!-- Payment section -->
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <h6 class="pb-2 widget-title2">{{ __('Shipping Options') }} :</h6>
+                        <div class="row">
+                            <div class="col-sm-6  mb-4">
+                                @if (PriceHelper::CheckDigital() == true)
+                                    @php
+                                        $free_shipping = DB::table('shipping_services')
+                                            ->whereStatus(1)
+                                            ->whereIsCondition(1)
+                                            ->first();
+                                    @endphp
+
+                                    <select name="shipping_id" class="form-control" id="shipping_id_select" required>
+                                        <option value="" selected disabled>
+                                            {{ __('Select Shipping Method') }}
+                                        </option>
+                                        @foreach (DB::table('shipping_services')->whereStatus(1)->get() as $shipping)
+                                            @if ($shipping->id == 1 && isset($free_shipping) && $free_shipping->minimum_price <= $cart_total)
+                                                <option value="{{ $shipping->id }}"
+                                                    data-href="{{ route('front.shipping.setup') }}">
+                                                    {{ $shipping->title }}
+                                                </option>
+                                            @else
+                                                @if ($shipping->id != 1)
+                                                    <option value="{{ $shipping->id }}"
+                                                        data-href="{{ route('front.shipping.setup') }}">
+                                                        {{ $shipping->title }}
+                                                        ({{ PriceHelper::setCurrencyPrice($shipping->price) }})
+                                                    </option>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </select>
+
+                                    <small
+                                        class="text-primary shipping_message">{{ __('Please select shipping method') }}</small>
+                                    @error('shipping_id')
+                                        <p class="text-danger shipping_message">{{ $message }}</p>
+                                    @enderror
+                                @endif
+                            </div>
+                            <div class="col-sm-6  mb-4">
+                                @if (PriceHelper::CheckDigital() == true)
+
+
+                                    @if (DB::table('states')->whereStatus(1)->count() > 0)
+                                        <select name="state_id" class="form-control" id="state_id_select" required>
+                                            <option value="" selected disabled>
+                                                {{ __('Select Shipping State') }}
+                                            </option>
+                                            @foreach (DB::table('states')->whereStatus(1)->get() as $state)
+                                                <option value="{{ $state->id }}"
+                                                    data-href="{{ route('front.state.setup') }}"
+                                                    {{ Auth::check() && Auth::user()->state_id == $state->id ? 'selected' : '' }}>
+                                                    {{ $state->name }}
+                                                    @if ($state->type == 'fixed')
+                                                        ({{ PriceHelper::setCurrencyPrice($state->price) }})
+                                                    @else
+                                                        ({{ $state->price }}%)
+                                                    @endif
+
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <small
+                                            class="text-primary state_message">{{ __('Please select shipping state') }}</small>
+                                        @error('state_id')
+                                            <p class="text-danger state_message">{{ $message }}</p>
+                                        @enderror
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                        <h6 class="pb-2 widget-title2">{{ __('Select your payment method & Conform your order :') }} :</h6>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="payment-methods">
+                                    @php
+                                        $gateways = DB::table('payment_settings')->whereStatus(1)->get();
+                                    @endphp
+                                    @foreach ($gateways as $gateway)
+                                        @if (PriceHelper::CheckDigitalPaymentGateway())
+                                            @if ($gateway->unique_keyword != 'cod')
+                                                <div class="single-payment-method">
+                                                    <a class="text-decoration-none " href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#{{ $gateway->unique_keyword }}"
+                                                        data-payment-name="{{ $gateway->name }}">
+
+                                                        <img class=""
+                                                            src="{{ asset('assets/images/' . $gateway->photo) }}"
+                                                            alt="{{ $gateway->name }}" title="{{ $gateway->name }}">
+                                                        <p>{{ $gateway->name }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="single-payment-method">
+                                                <a class="text-decoration-none" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#{{ $gateway->unique_keyword }}"
+                                                    data-payment-name="{{ $gateway->name }}">
+
+                                                    <img class=""
+                                                        src="{{ asset('assets/images/' . $gateway->photo) }}"
+                                                        alt="{{ $gateway->name }}" title="{{ $gateway->name }}">
+                                                    <p>{{ $gateway->name }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-            <!-- Sidebar          -->
+
+
+
+
             @include('includes.checkout_sitebar', $cart)
+
+
         </div>
+
+        @include('includes.checkout_modal')
+
+
+
+
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#checkoutBilling input, #checkoutBilling select').on('input change', function() {
+                var formData = $('#checkoutBilling').serialize();
+
+                $.ajax({
+                    url: "{{ route('front.checkout.store') }}",
+                    method: "POST",
+                    data: formData,
+                    success: function(response) {
+
+                        console.log(response);
+                        if (response.success) {
+                            console.log('Data saved successfully');
+
+                            if (response.redirect) {
+                                window.location.href = response.redirect;
+                            }
+                        } else {
+                            console.log('Error:', response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('AJAX Error:', error);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            // Handle payment method selection
+            $('.single-payment-method a').on('click', function(e) {
+                e.preventDefault(); // Prevent the default anchor behavior
+
+                // Get the selected payment method
+                var paymentName = $(this).data('payment-name');
+
+
+                // Prepare the data to be sent to the server
+                var data = {
+                    payment_method: paymentName,
+                    state_id: '{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}',
+                    shipping_id: '' // You can pass the actual shipping ID if available
+                };
+
+                console.log('Data:', data);
+
+                // Send the data to the server using AJAX
+                // $.ajax({
+                //     url: "{{ route('front.checkout.submit') }}",
+                //     method: 'POST',
+                //     data: data,
+                //     success: function(response) {
+                //         if (response.success) {
+                //             console.log('Payment method selected:', paymentName);
+
+                //             // Redirect to the payment gateway
+                //             window.location.href = response.redirect;
+                //         } else {
+                //             alert('Error: ' + response.message);
+                //         }
+                //     },
+                //     error: function(xhr, status, error) {
+                //         alert('An error occurred while processing the payment.');
+                //         console.log('AJAX Error: ' + error);
+                //     }
+                // });
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentMethods = document.querySelectorAll('.single-payment-method a');
+
+            paymentMethods.forEach(function(method) {
+                method.addEventListener('click', function() {
+                    // Remove active class from all payment methods
+                    paymentMethods.forEach(function(item) {
+                        item.classList.remove('border', 'border-primary', 'active');
+                    });
+
+                    // Add active class to the selected payment method
+                    this.classList.add('border', 'border-primary', 'active');
+                });
+            });
+        });
+    </script>
 @endsection

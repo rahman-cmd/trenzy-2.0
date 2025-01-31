@@ -2,18 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\{
-    Models\Order,
-    Models\PaymentSetting,
-    Traits\StripeCheckout,
-    Traits\MollieCheckout,
-    Traits\PaypalCheckout,
-    Traits\PaystackCheckout,
-    Http\Controllers\Controller,
-    Http\Requests\PaymentRequest,
-    Traits\CashOnDeliveryCheckout,
-    Traits\BankCheckout,
-};
+use App\{Models\Order, Models\PaymentSetting, Traits\StripeCheckout, Traits\MollieCheckout, Traits\PaypalCheckout, Traits\PaystackCheckout, Http\Controllers\Controller, Http\Requests\PaymentRequest, Traits\CashOnDeliveryCheckout, Traits\BankCheckout};
 use App\Helpers\PriceHelper;
 use App\Helpers\SmsHelper;
 use App\Models\Currency;
@@ -28,7 +17,6 @@ use Mollie\Laravel\Facades\Mollie;
 
 class CheckoutController extends Controller
 {
-
     use StripeCheckout {
         StripeCheckout::__construct as private __stripeConstruct;
     }
@@ -56,7 +44,6 @@ class CheckoutController extends Controller
 
     public function ship_address()
     {
-
         if (!Session::has('cart')) {
             return redirect(route('front.cart'));
         }
@@ -75,9 +62,7 @@ class CheckoutController extends Controller
             }
         }
 
-
         $shipping = [];
-       
 
         $discount = [];
         if (Session::has('coupon')) {
@@ -88,7 +73,7 @@ class CheckoutController extends Controller
             $shipping = null;
         }
 
-        $grand_total = $cart_total +  $total_tax;
+        $grand_total = $cart_total + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
         $state_tax = Auth::check() && Auth::user()->state_id ? Auth::user()->state->price : 0;
         $total_amount = $grand_total + $state_tax;
@@ -103,33 +88,30 @@ class CheckoutController extends Controller
         return view('front.checkout.billing', $data);
     }
 
-
-
     public function billingStore(Request $request)
     {
-
         if ($request->same_ship_address) {
             Session::put('billing_address', $request->all());
 
             if (PriceHelper::CheckDigital()) {
                 $shipping = [
-                    "ship_first_name" => $request->bill_first_name,
-                    "ship_last_name" => $request->bill_last_name,
-                    "ship_email" => $request->bill_email,
-                    "ship_phone" => $request->bill_phone,
-                    "ship_company" => $request->bill_company,
-                    "ship_address1" => $request->bill_address1,
-                    "ship_address2" => $request->bill_address2,
-                    "ship_zip" => $request->bill_zip,
-                    "ship_city" => $request->bill_city,
-                    "ship_country" => $request->bill_country,
+                    'ship_first_name' => $request->bill_first_name,
+                    'ship_last_name' => $request->bill_last_name,
+                    'ship_email' => $request->bill_email,
+                    'ship_phone' => $request->bill_phone,
+                    'ship_company' => $request->bill_company,
+                    'ship_address1' => $request->bill_address1,
+                    'ship_address2' => $request->bill_address2,
+                    'ship_zip' => $request->bill_zip,
+                    'ship_city' => $request->bill_city,
+                    'ship_country' => $request->bill_country,
                 ];
             } else {
                 $shipping = [
-                    "ship_first_name" => $request->bill_first_name,
-                    "ship_last_name" => $request->bill_last_name,
-                    "ship_email" => $request->bill_email,
-                    "ship_phone" => $request->bill_phone,
+                    'ship_first_name' => $request->bill_first_name,
+                    'ship_last_name' => $request->bill_last_name,
+                    'ship_email' => $request->bill_email,
+                    'ship_phone' => $request->bill_phone,
                 ];
             }
             Session::put('shipping_address', $shipping);
@@ -139,16 +121,19 @@ class CheckoutController extends Controller
         }
 
         if (Session::has('shipping_address')) {
-            return redirect()->route('front.checkout.payment');
+            // return response()->json([
+            //     'success' => true,
+            //     'redirect' => route('front.checkout.payment'), // Or any other URL you want to redirect to
+            // ]);
         } else {
-            return redirect()->route('front.checkout.shipping');
+            return response()->json([
+                'redirect' => route('front.checkout.billing'), // Or any other URL you want to redirect to
+            ]);
         }
     }
 
-
     public function shipping()
     {
-
         if (Session::has('shipping_address')) {
             return redirect(route('front.checkout.payment'));
         }
@@ -164,7 +149,6 @@ class CheckoutController extends Controller
         $total = 0;
 
         foreach ($cart as $key => $item) {
-
             $total += ($item['main_price'] + $item['attribute_price']) * $item['qty'];
             $cart_total = $total;
             $item = Item::findOrFail($key);
@@ -173,7 +157,7 @@ class CheckoutController extends Controller
             }
         }
         $shipping = [];
-       
+
         $discount = [];
         if (Session::has('coupon')) {
             $discount = Session::get('coupon');
@@ -201,12 +185,9 @@ class CheckoutController extends Controller
 
     public function shippingStore(Request $request)
     {
-
         Session::put('shipping_address', $request->all());
         return redirect(route('front.checkout.payment'));
     }
-
-
 
     public function payment()
     {
@@ -217,7 +198,6 @@ class CheckoutController extends Controller
         if (!Session::has('shipping_address')) {
             return redirect(route('front.checkout.shipping'));
         }
-
 
         if (!Session::has('cart')) {
             return redirect(route('front.cart'));
@@ -230,7 +210,6 @@ class CheckoutController extends Controller
         $total = 0;
 
         foreach ($cart as $key => $item) {
-
             $total += ($item['main_price'] + $item['attribute_price']) * $item['qty'];
             $cart_total = $total;
             $item = Item::findOrFail($key);
@@ -239,7 +218,7 @@ class CheckoutController extends Controller
             }
         }
         $shipping = [];
-      
+
         $discount = [];
         if (Session::has('coupon')) {
             $discount = Session::get('coupon');
@@ -249,11 +228,10 @@ class CheckoutController extends Controller
             $shipping = null;
         }
 
-        $grand_total = ($cart_total  + $total_tax);
+        $grand_total = $cart_total + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
         $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
         $grand_total = $grand_total + $state_tax;
-
 
         $total_amount = $grand_total;
 
@@ -269,8 +247,6 @@ class CheckoutController extends Controller
 
     public function checkout(PaymentRequest $request)
     {
-
-
         $input = $request->all();
 
         $checkout = false;
@@ -283,29 +259,11 @@ class CheckoutController extends Controller
             $currency = Currency::where('is_default', 1)->first();
         }
 
-
-        $usd_supported = array(
-            "USD", "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG",
-            "AZN", "BAM", "BBD", "BDT", "BGN", "BIF", "BMD", "BND", "BOB", "BRL",
-            "BSD", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY", "COP",
-            "CRC", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ETB", "EUR",
-            "FJD", "FKP", "GBP", "GEL", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD",
-            "HNL", "HTG", "HUF", "IDR", "ILS", "INR", "ISK", "JMD", "JPY", "KES",
-            "KGS", "KHR", "KMF", "KRW", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD",
-            "LSL", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MUR", "MVR",
-            "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD",
-            "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD",
-            "RUB", "RWF", "SAR", "SBD", "SCR", "SEK", "SGD", "SHP", "SLE", "SOS",
-            "SRD", "STD", "SZL", "THB", "TJS", "TOP", "TRY", "TTD", "TWD", "TZS",
-            "UAH", "UGX", "UYU", "UZS", "VND", "VUV", "WST", "XAF", "XCD", "XOF",
-            "XPF", "YER", "ZAR", "ZMW"
-        );
-
+        $usd_supported = ['USD', 'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BWP', 'BYN', 'BZD', 'CAD', 'CDF', 'CHF', 'CLP', 'CNY', 'COP', 'CRC', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HTG', 'HUF', 'IDR', 'ILS', 'INR', 'ISK', 'JMD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KRW', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SEK', 'SGD', 'SHP', 'SLE', 'SOS', 'SRD', 'STD', 'SZL', 'THB', 'TJS', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'UYU', 'UZS', 'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW'];
 
         $paypal_supported = ['USD', 'EUR', 'AUD', 'BRL', 'CAD', 'HKD', 'JPY', 'MXN', 'NZD', 'PHP', 'GBP', 'RUB'];
-        $paystack_supported = ['NGN', "GHS"];
+        $paystack_supported = ['NGN', 'GHS'];
         switch ($input['payment_method']) {
-
             case 'Stripe':
                 if (!in_array($currency->name, $usd_supported)) {
                     Session::flash('error', __('Currency Not Supported'));
@@ -325,7 +283,6 @@ class CheckoutController extends Controller
                 $payment_redirect = true;
                 $payment = $this->paypalSubmit($input);
                 break;
-
 
             case 'Mollie':
                 if (!in_array($currency->name, $usd_supported)) {
@@ -357,8 +314,6 @@ class CheckoutController extends Controller
                 $payment = $this->cashOnDeliverySubmit($input);
                 break;
         }
-
-
 
         if ($checkout) {
             if ($payment_redirect) {
@@ -408,7 +363,6 @@ class CheckoutController extends Controller
 
     public function mollieRedirect(Request $request)
     {
-
         $responseData = $request->all();
 
         $payment = Mollie::api()->payments()->get(Session::get('payment_id'));
@@ -446,8 +400,6 @@ class CheckoutController extends Controller
         return redirect()->route('front.index');
     }
 
-
-
     public function paymentCancle()
     {
         $message = '';
@@ -466,7 +418,6 @@ class CheckoutController extends Controller
         $state_id = $request->state_id;
         $shipping_id = $request->shipping_id;
 
-     
         if (!Session::has('cart')) {
             return redirect(route('front.cart'));
         }
@@ -476,7 +427,6 @@ class CheckoutController extends Controller
         $cart_total = 0;
         $total = 0;
         foreach ($cart as $key => $item) {
-
             $total += ($item['main_price'] + $item['attribute_price']) * $item['qty'];
             $cart_total = $total;
             $item = Item::findOrFail($key);
@@ -494,7 +444,7 @@ class CheckoutController extends Controller
             $discount = Session::get('coupon');
         }
 
-        $grand_total = ($cart_total + ($shipping ? $shipping->price : 0)) + $total_tax;
+        $grand_total = $cart_total + ($shipping ? $shipping->price : 0) + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
 
         $state_price = 0;
@@ -530,9 +480,7 @@ class CheckoutController extends Controller
     {
         $state_id = $request->state_id;
         $shipping_id = $request->shipping_id;
-        
-        
-      
+
         if (!Session::has('cart')) {
             return redirect(route('front.cart'));
         }
@@ -542,7 +490,6 @@ class CheckoutController extends Controller
         $cart_total = 0;
         $total = 0;
         foreach ($cart as $key => $item) {
-
             $total += ($item['main_price'] + $item['attribute_price']) * $item['qty'];
             $cart_total = $total;
             $item = Item::findOrFail($key);
@@ -558,7 +505,7 @@ class CheckoutController extends Controller
             $discount = Session::get('coupon');
         }
 
-        $grand_total = ($cart_total + ($shipping ? $shipping->price : 0)) + $total_tax;
+        $grand_total = $cart_total + ($shipping ? $shipping->price : 0) + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
 
         $state_price = 0;

@@ -42,7 +42,7 @@
                                 @endphp
                                 <ul class="list-unstyled">
                                     <li><span class="text-muted pay-label">{{ __('Name') }}:
-                                        </span>{{ $ship['ship_first_name'] }} {{ $ship['ship_last_name'] }}</li>
+                                        </span>{{ $ship['ship_first_name'] }}</li>
                                     @if (PriceHelper::CheckDigital())
                                         <li><span class="text-muted pay-label">{{ __('Address') }}:
                                             </span>{{ $ship['ship_address1'] }} {{ $ship['ship_address2'] }}</li>
