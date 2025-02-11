@@ -400,13 +400,13 @@ body_theme4 @endif
                         <p class="mb-1"><strong>{{ __('Address') }}: </strong> {{ $setting->footer_address }}</p>
                         <p class="mb-1"><strong>{{ __('Phone') }}: </strong> {{ $setting->footer_phone }}</p>
                         <p class="mb-3"><strong>{{ __('Email') }}: </strong> {{ $setting->footer_email }}</p>
-                        <ul class="list-unstyled text-sm">
+                        {{-- <ul class="list-unstyled text-sm">
                             <li><span class=""><strong>{{ __('Monday-Friday') }}:
                                     </strong></span>{{ $setting->friday_start }} - {{ $setting->friday_end }}</li>
                             <li><span class=""><strong>{{ __('Saturday') }}:
                                     </strong></span>{{ $setting->satureday_start }} - {{ $setting->satureday_end }}
                             </li>
-                        </ul>
+                        </ul> --}}
                         @php
                             $links = json_decode($setting->social_link, true)['links'];
                             $icons = json_decode($setting->social_link, true)['icons'];

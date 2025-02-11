@@ -90,6 +90,12 @@ class CheckoutController extends Controller
 
     public function billingStore(Request $request)
     {
+        $request->validate([
+            'bill_first_name' => 'required|string|min:3|max:255',
+            'bill_phone' => 'required|string|regex:/^01[0-9]{9}$/',
+            'bill_address1' => 'required|string|min:5|max:255',
+        ]);
+
         if ($request->same_ship_address) {
             Session::put('billing_address', $request->all());
 

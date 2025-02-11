@@ -315,6 +315,24 @@
                     }
                 });
             });
+
+            $('form').on('submit', function(e) {
+                var name = $('input[name="bill_first_name"]').val();
+                var phone = $('input[name="bill_phone"]').val();
+                var address = $('input[name="bill_address1"]').val();
+
+                if (!name || name.length < 3) {
+                    e.preventDefault();
+                    // ইরর মেসেজ দেখানোর জন্য
+                    $('#name-error').text('Name must be at least 3 characters long.');
+                } else if (!phone || !/^01[0-9]{9}$/.test(phone)) {
+                    e.preventDefault();
+                    $('#phone-error').text('Phone number must be a valid Bangladeshi mobile number.');
+                } else if (!address || address.length < 5) {
+                    e.preventDefault();
+                    $('#address-error').text('Address must be at least 5 characters long.');
+                }
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function() {
