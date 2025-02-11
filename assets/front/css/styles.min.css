@@ -6303,7 +6303,7 @@ video {
 
 .page-title {
     width: 100%;
-    margin-bottom: 60px;
+    /* margin-bottom: 60px; */
     padding: 3px 0;
     border-top: 1px solid #e5e5e5
 }
@@ -9305,7 +9305,6 @@ p.cookie-consent__message {
 .widget-title2 {
     position: relative;
     margin-bottom: 24px;
-    border-bottom: 2px solid #e5e5e5;
     font-size: 16px;
     font-weight: 600;
 }

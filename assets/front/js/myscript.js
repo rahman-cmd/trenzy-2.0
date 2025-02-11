@@ -1040,7 +1040,9 @@ $(function ($) {
                 );
               }
               if (add_type == 1) {
-                location.href = mainurl + "/cart";
+                // if click add_to_cart button then redirect to cart page
+
+                location.href = mainurl + "/checkout/billing/address";
               } else {
                 successNotification(data.message);
               }

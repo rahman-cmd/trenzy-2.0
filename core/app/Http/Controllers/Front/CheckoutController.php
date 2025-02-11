@@ -247,8 +247,8 @@ class CheckoutController extends Controller
 
     public function checkout(PaymentRequest $request)
     {
+        // dd($request->all());
         $input = $request->all();
-
         $checkout = false;
         $payment_redirect = false;
         $payment = null;
@@ -261,49 +261,7 @@ class CheckoutController extends Controller
 
         $usd_supported = ['USD', 'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BWP', 'BYN', 'BZD', 'CAD', 'CDF', 'CHF', 'CLP', 'CNY', 'COP', 'CRC', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HTG', 'HUF', 'IDR', 'ILS', 'INR', 'ISK', 'JMD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KRW', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SEK', 'SGD', 'SHP', 'SLE', 'SOS', 'SRD', 'STD', 'SZL', 'THB', 'TJS', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'UYU', 'UZS', 'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW'];
 
-        $paypal_supported = ['USD', 'EUR', 'AUD', 'BRL', 'CAD', 'HKD', 'JPY', 'MXN', 'NZD', 'PHP', 'GBP', 'RUB'];
-        $paystack_supported = ['NGN', 'GHS'];
         switch ($input['payment_method']) {
-            case 'Stripe':
-                if (!in_array($currency->name, $usd_supported)) {
-                    Session::flash('error', __('Currency Not Supported'));
-                    return redirect()->back();
-                }
-                $checkout = true;
-                $payment_redirect = true;
-                $payment = $this->stripeSubmit($input);
-                break;
-
-            case 'Paypal':
-                if (!in_array($currency->name, $paypal_supported)) {
-                    Session::flash('error', __('Currency Not Supported'));
-                    return redirect()->back();
-                }
-                $checkout = true;
-                $payment_redirect = true;
-                $payment = $this->paypalSubmit($input);
-                break;
-
-            case 'Mollie':
-                if (!in_array($currency->name, $usd_supported)) {
-                    Session::flash('error', __('Currency Not Supported'));
-                    return redirect()->back();
-                }
-                $checkout = true;
-                $payment_redirect = true;
-                $payment = $this->MollieSubmit($input);
-                break;
-
-            case 'Paystack':
-                if (!in_array($currency->name, $paystack_supported)) {
-                    Session::flash('error', __('Currency Not Supported'));
-                    return redirect()->back();
-                }
-                $checkout = true;
-                $payment = $this->PaystackSubmit($input);
-
-                break;
-
             case 'Bank':
                 $checkout = true;
                 $payment = $this->BankSubmit($input);
