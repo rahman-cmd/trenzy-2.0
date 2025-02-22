@@ -240,10 +240,11 @@
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
                                         <input class="custom-control-input" type="checkbox" id="trams__condition">
-                                        <label class="custom-control-label" for="trams__condition">This is <a
-                                                href="{{ $setting->policy_link }}" target="_blank">Privacy Policy</a> and
-                                            <a href="{{ $setting->terms_link }}" target="_blank">Terms of Service</a>
-                                            apply.</label>
+                                        <label class="custom-control-label" for="trams__condition">I have read and agree
+                                            to the website <a href="{{ $setting->policy_link }}" target="_blank">Terms
+                                            </a> and
+                                            <a href="{{ $setting->terms_link }}" target="_blank">conditions</a>
+                                        </label>
                                     </div>
                                 </div>
                             @endif
@@ -252,11 +253,11 @@
 
                             @if ($setting->is_privacy_trams == 1)
                                 <button disabled id="continue__button" class="btn btn-primary  btn-block"
-                                    type="submit"><span class="hidden-xs-down">{{ __('Order Now') }}</span><i
+                                    type="submit"><span>{{ __('Place Order') }}</span><i
                                         class="icon-arrow-right"></i></button>
                             @else
-                                <button class="btn btn-primary btn-block" type="submit"><span
-                                        class="hidden-xs-down">{{ __('Order Now') }}</span><i
+                                <button class="btn btn-primary btn-block"
+                                    type="submit"><span>{{ __('Place Order') }}</span><i
                                         class="icon-arrow-right"></i></button>
                             @endif
 

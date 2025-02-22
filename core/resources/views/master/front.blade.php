@@ -89,6 +89,61 @@ body_theme4 @endif
 
     <!-- Header-->
     <header class="site-header navbar-sticky">
+        <div class="menu-top-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="t-m-s-a">
+                            <a class="track-order-link" href="{{ route('front.order.track') }}"><i
+                                    class="icon-map-pin"></i>{{ __('Track Order') }}</a>
+                            <a class="track-order-link compare-mobile d-lg-none"
+                                href="{{ route('fornt.compare.index') }}">{{ __('Compare') }}</a>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="right-area">
+
+                            <a class="track-order-link wishlist-mobile d-inline-block d-lg-none"
+                                href="{{ route('user.wishlist.index') }}"><i
+                                    class="icon-heart"></i>{{ __('Wishlist') }}</a>
+
+                            <div class="t-h-dropdown ">
+                                <a class="main-link" href="#">{{ __('Currency') }}<i
+                                        class="icon-chevron-down"></i></a>
+                                <div class="t-h-dropdown-menu">
+                                    @foreach (DB::table('currencies')->get() as $currency)
+                                        <a class="{{ Session::get('currency') == $currency->id ? 'active' : ($currency->is_default == 1 && !Session::has('currency') ? 'active' : '') }}"
+                                            href="{{ route('front.currency.setup', $currency->id) }}"><i
+                                                class="icon-chevron-right pr-2"></i>{{ $currency->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="login-register ">
+                                @if (!Auth::user())
+                                    <a class="track-order-link mr-0" href="{{ route('user.login') }}">
+                                        {{ __('Login/Register') }}
+                                    </a>
+                                @else
+                                    <div class="t-h-dropdown">
+                                        <div class="main-link">
+                                            <i class="icon-user pr-2"></i> <span
+                                                class="text-label">{{ Auth::user()->first_name }}</span>
+                                        </div>
+                                        <div class="t-h-dropdown-menu">
+                                            <a href="{{ route('user.dashboard') }}"><i
+                                                    class="icon-chevron-right pr-2"></i>{{ __('Dashboard') }}</a>
+                                            <a href="{{ route('user.logout') }}"><i
+                                                    class="icon-chevron-right pr-2"></i>{{ __('Logout') }}</a>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Topbar-->
         <div class="topbar">
             <div class="container-fluid">
